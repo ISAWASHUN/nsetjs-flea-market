@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Items } from './models/items.model';
+import { CreateItemDto } from './dto/create-item.dto';
 
 @Injectable()
 export class ItemsService {
@@ -8,7 +9,11 @@ export class ItemsService {
     return this.items;
   }
 
-  create(item: Items): Items {
+  create(createItemDto: CreateItemDto): Items {
+    const item: Items = {
+      ...createItemDto,
+      status: 'ON_SALE',
+    };
     this.items.push(item);
     return item;
   }
