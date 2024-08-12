@@ -16,4 +16,12 @@ export class ItemsService {
   findById(id: string): Items {
     return this.items.find((item) => item.id === id);
   }
+
+  updateStatus(id: string): Items {
+    const item = this.findById(id);
+    if (item) {
+      item.status = item.status === 'ON_SALE' ? 'SOLD_OUT' : 'ON_SALE';
+    }
+    return item;
+  }
 }
