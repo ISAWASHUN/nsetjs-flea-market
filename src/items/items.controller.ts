@@ -10,24 +10,24 @@ import {
   Put,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import { Items } from './models/items.model';
+import { Item } from '@prisma/client';
 import { CreateItemDto } from './dto/create-item.dto';
 
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
-  findAll(): Items[] {
+  findAll(): Item[] {
     return this.itemsService.findAll();
   }
 
   @Post()
-  create(@Body() createItemDto: CreateItemDto): Items {
-    return this.itemsService.create(createItemDto);
+  async create(@Body() createItemDto: CreateItemDto): Promise<Item> {
+    return await this.itemsService.create(createItemDto);
   }
 
   @Get(':id')
-  findById(@Param('id', ParseUUIDPipe) id: string): Items {
+  findById(@Param('id', ParseUUIDPipe) id: string): Item {
     const found = this.itemsService.findById(id);
     if (!found) {
       throw new NotFoundException(`Item with ID ${id} not found`);
@@ -36,12 +36,12 @@ export class ItemsController {
   }
 
   @Put(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string): Items {
+  updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
     return this.itemsService.updateStatus(id);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string): Items {
+  delete(@Param('id', ParseUUIDPipe) id: string): Item {
     return this.itemsService.delete(id);
   }
 }
