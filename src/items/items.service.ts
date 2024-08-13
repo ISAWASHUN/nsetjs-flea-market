@@ -7,8 +7,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ItemsService {
   constructor(private readonly prismaService: PrismaService) {}
   private items: Item[] = [];
-  findAll(): Item[] {
-    return this.items;
+  async findAll(): Promise<Item[]> {
+    return await this.prismaService.item.findMany();
   }
 
   async create(createItemDto: CreateItemDto): Promise<Item> {
@@ -23,8 +23,12 @@ export class ItemsService {
     });
   }
 
-  findById(id: string): Item {
-    return this.items.find((item) => item.id === id);
+  async findById(id: string): Promise<Item> {
+    return await this.prismaService.item.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
   updateStatus(id: string): Item {

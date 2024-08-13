@@ -16,9 +16,10 @@ import { CreateItemDto } from './dto/create-item.dto';
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
+
   @Get()
-  findAll(): Item[] {
-    return this.itemsService.findAll();
+  async findAll(): Promise<Item[]> {
+    return await this.itemsService.findAll();
   }
 
   @Post()
@@ -27,12 +28,12 @@ export class ItemsController {
   }
 
   @Get(':id')
-  findById(@Param('id', ParseUUIDPipe) id: string): Item {
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
     const found = this.itemsService.findById(id);
     if (!found) {
       throw new NotFoundException(`Item with ID ${id} not found`);
     }
-    return this.itemsService.findById(id);
+    return await this.itemsService.findById(id);
   }
 
   @Put(':id')
