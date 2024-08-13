@@ -37,12 +37,12 @@ export class ItemsController {
   }
 
   @Put(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.itemsService.updateStatus(id);
+  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.itemsService.updateStatus(id);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string): Item {
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.itemsService.delete(id);
   }
 }
